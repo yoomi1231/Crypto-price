@@ -178,7 +178,7 @@ const Market = () => {
             const change = parseFloat((coin['1d'].price_change_pct)* 100).toFixed(2);
 
             return (
-                <tbody>
+                <tbody key={`${coin}-${index}`}>
                     <PriceContainer>
                         <td><PriceItemWrapper>{index+1}</PriceItemWrapper></td>
                         <td>
