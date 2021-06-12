@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import useAxios from 'axios-hooks';
+import _ from 'lodash';
 import styled from '@emotion/styled';
 import MarketCapHistory from './MarketCapHistory';
 
@@ -161,7 +162,7 @@ const Market = () => {
     };
 
     const renderChange = (coin) => {
-        const change = parseFloat((coin['1d'].price_change_pct)* 100).toFixed(2);
+        const change = parseFloat(_.get(coin['1d'], "price_change_pct", "") * 100).toFixed(2);
 
         if (change > 0) {
             return <div>+ {change}%</div>
@@ -175,7 +176,7 @@ const Market = () => {
         return coins.slice(0, 60).map((coin, index) => {
             const price = parseFloat(coin.price).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
             const marketCap = parseFloat(coin.market_cap).toFixed(2);
-            const change = parseFloat((coin['1d'].price_change_pct)* 100).toFixed(2);
+            const change = parseFloat(_.get(coin['1d'], "price_change_pct", "") * 100).toFixed(2);
 
             return (
                 <tbody key={`${coin}-${index}`}>
