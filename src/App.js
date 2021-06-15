@@ -7,9 +7,19 @@ const Container = styled.div`
     font-family: 'Lato', sans-serif;
 `;
 
+const TitleContainer = styled.div`
+    width: 80vw;
+    margin: auto;
+    padding: 50px 0 50px 20px;
+    font-size: 2em;
+    background-color: #30507F;
+    color: white;
+    font-family: "Liberation Mono", monospace;
+`;
+
 const NomicsAttribution = styled.a`
     width: 90vw;
-    padding-top: 10px;
+    padding-bottom: 5px;
     display: flex;
     justify-content: flex-end;
     text-decoration: none;
@@ -23,10 +33,13 @@ const NomicsAttribution = styled.a`
 const App = () => {
     return (
         <Container>
-            <Market />
             <NomicsAttribution href="https://nomics.com">
                 Crypto Market Cap & Pricing Data Provided By Nomics
             </NomicsAttribution>
+            <TitleContainer>
+                Cryptocurrency Market Prices
+            </TitleContainer>
+            <Market />
         </Container>
     );
 };
