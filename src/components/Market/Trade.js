@@ -12,7 +12,7 @@ const InputContainer = styled.div`
 const InputForm = styled.form`
     display: flex;
     flex-direction: row;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     margin: auto;
     width: 300px;
@@ -30,11 +30,12 @@ const Trade = ({ onCoinBuyClick, onCoinSellClick, toggleModal, item, amt , setAm
                     }}
                 >
                     <div>
-                        <label>$</label>
+                        <label for="buyAmount">$</label>
                         <input 
-                            type="text" 
-                            name="price" 
+                            type="number" 
+                            name="buyAmount" 
                             placeholder="0" 
+                            min="0"
                             onChange={e => setAmt(e.target.value)}
                         />
                     </div>
@@ -49,12 +50,12 @@ const Trade = ({ onCoinBuyClick, onCoinSellClick, toggleModal, item, amt , setAm
                     }}
                 >   
                     <div>
-                        <label>$</label>
+                        <label for="sellAmount">$</label>
                         <input
-                            
-                            type="text" 
-                            name="price" 
+                            type="number" 
+                            name="sellAmount" 
                             placeholder="0" 
+                            min="0"
                             onChange={e => setAmt(e.target.value)}
                         />
                     </div>
@@ -69,3 +70,4 @@ const Trade = ({ onCoinBuyClick, onCoinSellClick, toggleModal, item, amt , setAm
 };
 
 export default Trade;
+

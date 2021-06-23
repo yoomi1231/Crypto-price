@@ -23,8 +23,9 @@ const TradeModal = styled(Modal)`
     text-align: center; 
     border: 1px solid black;
     margin-top: 10%;
-    padding-top: 20px;
-    background-color: white;
+    padding-top: 50px;
+    background-color: #d3dde3;
+
 `;   
 
 const KEY = '69e3fc48c2c8aab69a22c9c5b7631c169d983232';
