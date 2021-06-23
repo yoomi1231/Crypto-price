@@ -37,16 +37,15 @@ const CurrencyDetail = styled.div`
     color: grey;
 `;
 
-
 const LogoImg = styled.img`
     width: 30px;
     height: 30px;
     padding-right: 30px;
 `;
 
-
-const CoinDetail = ({ price, marketCap, change, coin, index, currentPage }) => {
-    // if (!coin) return null;
+const CoinDetail = ({ onTradeClick, price, marketCap, change, coin, index, currentPage }) => {
+    
+    if (!coin) return null;
 
     const numFormatter = (num) => {
         if (num > 999 && num < 1000000) {
@@ -71,23 +70,26 @@ const CoinDetail = ({ price, marketCap, change, coin, index, currentPage }) => {
     };
 
     return (
-        <tbody>
-            <PriceContainer>
-                <td><PriceItemWrapper>{(index+1) + (currentPage-1)*50}</PriceItemWrapper></td>
-                <td>
-                    <PriceItemWrapper>
-                        <LogoImg src={`${coin.logo_url}`} />
-                        <CoinDisplay>
-                            <NameDetail>{coin.name}</NameDetail>
-                            <CurrencyDetail>{coin.currency}</CurrencyDetail>
-                        </CoinDisplay>
-                    </PriceItemWrapper>
-                </td>
-                <td><PriceItemWrapper>${price}</PriceItemWrapper></td>
-                <td><PriceItemWrapper><ChangeWrapper displayChange={change > 0 ? 'green' : 'red'}>{renderChange(coin)}</ChangeWrapper></PriceItemWrapper></td>
-                <td><PriceItemWrapper>${numFormatter(marketCap)}</PriceItemWrapper></td>
-            </PriceContainer>
-        </tbody>
+        <>
+            <tbody>
+                <PriceContainer>
+                    <td><PriceItemWrapper>{(index+1) + (currentPage-1)*50}</PriceItemWrapper></td>
+                    <td>
+                        <PriceItemWrapper>
+                            <LogoImg src={`${coin.logo_url}`} />
+                            <CoinDisplay>
+                                <NameDetail>{coin.name}</NameDetail>
+                                <CurrencyDetail>{coin.currency}</CurrencyDetail>
+                            </CoinDisplay>
+                        </PriceItemWrapper>
+                    </td>
+                    <td><PriceItemWrapper>${price}</PriceItemWrapper></td>
+                    <td><PriceItemWrapper><ChangeWrapper displayChange={change > 0 ? 'green' : 'red'}>{renderChange(coin)}</ChangeWrapper></PriceItemWrapper></td>
+                    <td><PriceItemWrapper>${numFormatter(marketCap)}</PriceItemWrapper></td>
+                    <td><button onClick={onTradeClick(coin)}>Trade</button></td>
+                </PriceContainer>
+            </tbody>
+        </>
     );
    
 };

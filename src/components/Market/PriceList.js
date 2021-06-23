@@ -1,14 +1,31 @@
 import React, { useState } from 'react';
-import useAxios from 'axios-hooks';
 import _ from 'lodash';
 import styled from '@emotion/styled';
 import MarketCapHistory from './MarketCapHistory';
 import CoinDetail from './CoinDetail';
 import Pagination from './Pagination';
 
-const KEY = '69e3fc48c2c8aab69a22c9c5b7631c169d983232';
+const Container = styled.div`
+    width: 80vw;
+    padding-left: 50px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+`;
 
-const TableCont = styled.table`
+const NomicsAttribution = styled.a`
+    width: 80vw;
+    padding-bottom: 5px;
+    display: flex;
+    justify-content: flex-end;
+    text-decoration: none;
+    color: black;
+    &:hover {
+        text-decoration: underline;
+        text-decoration-color: blue;
+    }
+`;
+
+const StyledTable = styled.table`
     width: 100%;
     border: 1px solid #EAE8E6;
     border-collapse: collapse;
@@ -30,29 +47,27 @@ const MenuItemWrapper = styled.div`
     }
 `;
 
-const Container = styled.div`
-    width: 80vw;
-    margin: auto;
-`;
-
 const ListContainer = styled.div`
     background-color: rgb(246, 249, 252);
 `;
 
-const Market = () => {
+const TitleContainer = styled.div`
+    padding: 50px 0 50px 20px;
+    font-size: 2em;
+    background-color: #30507F;
+    color: white;
+    font-family: "Liberation Mono", monospace;
+`; 
+
+const PriceList = (props) => {
+    const { onTradeClick, data, currentPage, updateCurrentPage } = props;
+
     const [sortedData, setSortedData] = useState([]);
     const [sortingOrder, setSortingOrder] = useState('ascending');
-    const [currentPage, setCurrentPage] = useState(1);
-
-    const [{ data, loading, error }, refetch] = useAxios({
-        url: `https://api.nomics.com/v1/currencies/ticker?key=${KEY}&per-page=50&page=${currentPage}`
-    });
-
-    if (loading) return <div>Loading...</div>
-    if (error)  return <div>Error!</div>
+ 
 
     const sortByName = (property) => () => {
-        const newData = data.sort((a, b) => {
+        const newData = data.slice(0, 60).sort((a, b) => {
             
             let propA = a[property];
             let propB = b[property];
@@ -65,7 +80,7 @@ const Market = () => {
     };
 
     const sortByAmount = (property) => () => {  
-        const newData = data.sort((a, b) => {
+        const newData = data.slice(0, 60).sort((a, b) => {
             let propA = a[property];
             let propB = b[property];
             return sortingOrder === 'ascending' ?  propB - propA : propA - propB;
@@ -76,10 +91,9 @@ const Market = () => {
     };
 
     const sortByChange = (property) => () => {
-        const newData = data.sort((a, b) => {
+        const newData = data.slice(0, 60).sort((a, b) => {
             let propA = a['1d'][property];
             let propB = b['1d'][property];
-            // debugger
             return sortingOrder === 'ascending' ?  propB - propA : propA - propB;
         });
 
@@ -116,27 +130,34 @@ const Market = () => {
                     marketCap={marketCap}
                     change={change} 
                     currentPage={currentPage}
+                    onTradeClick={onTradeClick}
                 />
             );
         });
     };
 
     const paginatedData = sortedData.length === 0 ? data : sortedData;
+
     return (
         <div>
             <Container>
+                <NomicsAttribution href="https://nomics.com">
+                    Crypto Market Cap & Pricing Data Provided By Nomics
+                </NomicsAttribution>
+                <TitleContainer>
+                    Cryptocurrency Market Prices
+                </TitleContainer>
                 <MarketCapHistory />
                 <ListContainer>
-                    <TableCont>
+                    <StyledTable>
                         {renderMenuList()}
-
                         {renderPriceList()}
-                    </TableCont> 
+                    </StyledTable> 
                 </ListContainer>
-                <Pagination data={paginatedData} pageLimit={10} dataLimit={50} currentPage={currentPage} updateCurrentPage={setCurrentPage} />
+                <Pagination data={paginatedData} pageLimit={10} dataLimit={50} currentPage={currentPage} updateCurrentPage={updateCurrentPage} />
             </Container>
         </div>
     );
 };
 
-export default Market;
+export default PriceList;

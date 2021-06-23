@@ -1,5 +1,4 @@
-import { set } from 'lodash';
-import React, { useState } from 'react';
+import React from 'react';
 import styled from '@emotion/styled';
 
 const Container = styled.div`
@@ -28,8 +27,8 @@ const ActiveButton = styled.button`
     border: 1px solid blue;
 `;
 
-const Pagination = ({ data, pageLimit, dataLimit, currentPage, updateCurrentPage }) => {
-    const [pages, setPages] = useState(Math.round(data.length / dataLimit));
+const Pagination = ({ pageLimit, currentPage, updateCurrentPage }) => {
+    // const [pages, setPages] = useState(Math.round(data.length / dataLimit));
 
     function goToNextPage() {
         updateCurrentPage((page) => page + 1);
@@ -39,9 +38,10 @@ const Pagination = ({ data, pageLimit, dataLimit, currentPage, updateCurrentPage
         updateCurrentPage((page) => page - 1);
     }
 
-    function goToLastPage() {
-        updateCurrentPage((page) => pages);
+    function goToFirstPage() {
+        updateCurrentPage(1);
     }
+
     const changePage = (event) => {
         const pageNumber = Number(event.target.textContent);
         updateCurrentPage(pageNumber);
@@ -57,7 +57,7 @@ const Pagination = ({ data, pageLimit, dataLimit, currentPage, updateCurrentPage
                 {
                     currentPage  > 10 &&
                         <div>
-                            <PageButton onClick={setCurrentPage => (1)}>First</PageButton>
+                            <PageButton onClick={goToFirstPage}>First</PageButton>
                             <PageButton onClick={goToPreviousPage}>Prev</PageButton>
 
                         </div>
