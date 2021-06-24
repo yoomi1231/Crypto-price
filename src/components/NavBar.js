@@ -17,9 +17,12 @@ const StyledContainer = styled.div`
 
 const TitleWrapper = styled.div`
     padding: 20px;
-    height: 100px;
+    height: 300px;
     font-size: 1.5em;
     font-family: 'Rubik', sans-serif;
+    text-align: start;
+    color: #10298b;
+
 `;
 
 const MenuWrapper = styled.div`
@@ -32,9 +35,9 @@ const MenuWrapper = styled.div`
 
 const MenuLink = styled(Link)`
     text-decoration: none;
-    font-size: 1.2em;
-    color: blue;
-    padding-bottom: 50px;
+    font-size: 1.4em;
+    color: #10298b;
+    padding-bottom: 60px;
     &:hover {
         font-weight: bold;
         cursor: pointer;
@@ -46,8 +49,8 @@ const NavBar= () => {
         <StyledContainer>
             <TitleWrapper>Cryptocurrency Trading Simulator</TitleWrapper>
             <MenuWrapper>
-                <MenuLink to="/">Portfolio</MenuLink>
-                <MenuLink to="/market">Market</MenuLink>
+                <MenuLink to="/portfolio">Portfolio</MenuLink>
+                <MenuLink to="/">Market</MenuLink>
             </MenuWrapper>
         </StyledContainer>
     );

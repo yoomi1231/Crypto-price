@@ -1,4 +1,4 @@
-import React, { useState, useReducer } from 'react';
+import React, { useState, useReducer, useEffect } from 'react';
 import { Router, Route, Switch } from 'react-router-dom';
 import useAxios from 'axios-hooks';
 import history from '../history';
@@ -25,7 +25,6 @@ const TradeModal = styled(Modal)`
     margin-top: 10%;
     padding-top: 50px;
     background-color: #d3dde3;
-
 `;   
 
 const KEY = '69e3fc48c2c8aab69a22c9c5b7631c169d983232';
@@ -93,26 +92,40 @@ const reducer = (state, action) => {
 const App = () => {
     const [amt, setAmt] = useState();
     const [currentPage, setCurrentPage] = useState(1);
-    const [state, dispatch] = useReducer(reducer, assetData);
     const [isOpen, setIsOpen] = useState(false);
-    const [item, setItem] = useState();
+    const [crypto, setCrypto] = useState();
+    const [state, dispatch] = useReducer(reducer, assetData, () => {
+        const localData = localStorage.getItem('data');
+        return localData ? JSON.parse(localData) : assetData;
+    });
+
+    // useEffect(() => {
+    //     const data = JSON.parse(localStorage.getItem('data'));
+    //     if (data) {
+    //         return state === data
+    //     }
+    // }, [])
+
+    useEffect(() => {
+        localStorage.setItem('data', JSON.stringify(state));
+    }, [state]);
 
     const toggleModal = () => {
         setIsOpen(!isOpen);
     };
 
     const onTradeClick = (coin) => () => {
-        setItem(coin);
+        setCrypto(coin);
         toggleModal();
     };
 
     const onCoinBuyClick = () => {
-        dispatch({ type: 'buy', payload: { amt: amt, coin_symb: item.currency,  coin_name: item.name, coin_num: amt/item.price } });
+        dispatch({ type: 'buy', payload: { amt: amt, coin_symb: crypto.currency,  coin_name: crypto.name, coin_num: amt/crypto.price } });
         toggleModal();
     };
 
     const onCoinSellClick = (coin) => {
-        dispatch({ type: 'sell', payload: { amt: amt, coin_symb: item.currency,  coin_name: item.name, coin_num: amt/item.price } });
+        dispatch({ type: 'sell', payload: { amt: amt, coin_symb: crypto.currency,  coin_name: crypto.name, coin_num: amt/crypto.price } });
         toggleModal();
     };
 
@@ -129,10 +142,10 @@ const App = () => {
                 <Container>
                     <NavBar />
                     <Switch>
-                        <Route path="/" exact>
+                        <Route path="/portfolio" exact>
                             <AssetList myUSD={state.usd.total_amount} curAsset={state} data={data} refetch={refetch} />
                         </Route> 
-                        <Route path="/market" exact>
+                        <Route path="/" exact>
                             <PriceList onTradeClick={onTradeClick} data={data} currentPage={currentPage} updateCurrentPage={setCurrentPage} />
                         </Route> 
                     </Switch>
@@ -142,7 +155,7 @@ const App = () => {
                     onRequestClose={toggleModal}
                     ariaHideApp={false} 
                 >
-                    <Trade onCoinBuyClick={onCoinBuyClick} onCoinSellClick={onCoinSellClick} toggleModal={toggleModal} item={item} amt={amt} setAmt={setAmt} />
+                    <Trade onCoinBuyClick={onCoinBuyClick} onCoinSellClick={onCoinSellClick} toggleModal={toggleModal} item={crypto} amt={amt} setAmt={setAmt} />
                 </TradeModal>
             </Router>    
         </div>

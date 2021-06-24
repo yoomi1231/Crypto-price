@@ -26,7 +26,7 @@ const BalanceContainer = styled.div`
 const StyledButton = styled.button`
     border: none;
     font-size: 1em;
-    padding-bottom: 5px;
+    padding-bottom: 4px;
     color: blue;
     &:hover {
         font-weight: bold;
@@ -54,6 +54,12 @@ const StyledTable = styled.table`
     width: 100%;
     border: 1px solid #EAE8E6;
     border-collapse: collapse;
+    background-color: rgb(246, 249, 252);
+    font-size: 1.1em;
+`;
+const StyledRow = styled.tr`
+    display: grid;
+    grid-template-columns: 1fr 2fr;
 `;
 
 const MenuItemWrapper = styled.div`
@@ -63,7 +69,7 @@ const MenuItemWrapper = styled.div`
     justify-content: initial;
     align-items: center;
     padding-left: 10px;
-    width: 40vw;
+    ${'' /* width: 40vw; */}
 `;
 
 const BalanceItemWrapper = styled.div`
@@ -76,26 +82,29 @@ const AssetItemWrapper = styled.div`
 
 const AssetList = (props) => {
     const { data, myUSD, refetch, curAsset } = props;
-    
+
+   
     const curBalance = (asset) => {
         const result = data.find(item => item.name === curAsset[asset].name);
-        return parseFloat(result.price * curAsset[asset].total_num);
+        return parseFloat(result.price * curAsset[asset].total_num).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     };
 
     const displayAssets = () => {
         return Object.keys(curAsset).slice(1).map((asset, index) => 
-            <StyledTable>
-                <tr>
-                    <td>
-                        <MenuItemWrapper>{curAsset[asset].name}</MenuItemWrapper>
-                    </td>
-                    <td>
-                        <MenuItemWrapper>
-                            <BalanceItemWrapper>${curBalance(asset).toLocaleString()} </BalanceItemWrapper>
-                            <AssetItemWrapper>{`${curAsset[asset].total_num.toFixed(6)} ${asset}`}</AssetItemWrapper>
-                        </MenuItemWrapper>
-                    </td>  
-                </tr>
+            <StyledTable key={`${asset}-${index}`}>
+                <tbody>
+                    <StyledRow>
+                        <td>
+                            <MenuItemWrapper>{curAsset[asset].name}</MenuItemWrapper>
+                        </td>
+                        <td>
+                            <MenuItemWrapper>
+                                <BalanceItemWrapper>${curBalance(asset)} </BalanceItemWrapper>
+                                <AssetItemWrapper>{`${curAsset[asset].total_num.toFixed(6)} ${asset}`}</AssetItemWrapper>
+                            </MenuItemWrapper>
+                        </td>  
+                    </StyledRow>
+                </tbody>
             </StyledTable>
         );
     };
@@ -114,10 +123,12 @@ const AssetList = (props) => {
             </div>
             <AssetWrapper>
                 <StyledTable>
-                    <tr>
-                        <th><MenuItemWrapper>Asset</MenuItemWrapper></th>
-                        <th><MenuItemWrapper>Balance</MenuItemWrapper></th>        
-                    </tr>
+                    <tbody>
+                        <StyledRow>
+                            <th><MenuItemWrapper>Asset</MenuItemWrapper></th>
+                            <th><MenuItemWrapper>Balance</MenuItemWrapper></th>        
+                        </StyledRow>
+                    </tbody>
                 </StyledTable>
                 {displayAssets()}
             </AssetWrapper>
