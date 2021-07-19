@@ -44,7 +44,6 @@ const LogoImg = styled.img`
 `;
 
 const CoinDetail = ({ onTradeClick, price, marketCap, change, coin, index, currentPage }) => {
-    
     if (!coin) return null;
 
     const numFormatter = (num) => {
@@ -91,7 +90,6 @@ const CoinDetail = ({ onTradeClick, price, marketCap, change, coin, index, curre
             </tbody>
         </>
     );
-   
 };
 
 export default CoinDetail;

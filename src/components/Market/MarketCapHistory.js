@@ -35,7 +35,6 @@ const Statement = styled.span`
     color: #716B6E;
 `;
 
-
 const getDate = (d) => {
     function pad(n){return n<10 ? '0'+n : n}
     return d.getUTCFullYear()+'-'
@@ -88,5 +87,6 @@ const MarketCapHistory = () => {
         </div>
     );
 };
+
 export default MarketCapHistory;
 

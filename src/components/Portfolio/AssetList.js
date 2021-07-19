@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import CryptoChart from './CryptoChart';
 
 const WalletContainer = styled.div`
     padding-left: 50px;
@@ -25,12 +26,14 @@ const BalanceContainer = styled.div`
 
 const StyledButton = styled.button`
     border: none;
+    background-color: Transparent;
     font-size: 1em;
-    padding-bottom: 4px;
-    color: blue;
+    padding-top: 15px;
+    color: black;
     &:hover {
         font-weight: bold;
         cursor: pointer;
+        color: blue;
     }
 `;
 
@@ -59,7 +62,7 @@ const StyledTable = styled.table`
 `;
 const StyledRow = styled.tr`
     display: grid;
-    grid-template-columns: 1fr 2fr;
+    grid-template-columns: 2fr 4fr 1fr;
 `;
 
 const MenuItemWrapper = styled.div`
@@ -81,10 +84,10 @@ const AssetItemWrapper = styled.div`
 `;
 
 const AssetList = (props) => {
-    const { data, myUSD, refetch, curAsset } = props;
+    const { data, myUSD, refetch, curAsset, onViewChartClick } = props;
 
-   
     const curBalance = (asset) => {
+        
         const result = data.find(item => item.name === curAsset[asset].name);
         return parseFloat(result.price * curAsset[asset].total_num).toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     };
@@ -103,6 +106,10 @@ const AssetList = (props) => {
                                 <AssetItemWrapper>{`${curAsset[asset].total_num.toFixed(6)} ${asset}`}</AssetItemWrapper>
                             </MenuItemWrapper>
                         </td>  
+                        <td>
+                            <StyledButton onClick={onViewChartClick(curAsset[asset])}><i class="fas fa-chart-line"></i></StyledButton>
+                            
+                        </td>
                     </StyledRow>
                 </tbody>
             </StyledTable>
@@ -131,7 +138,7 @@ const AssetList = (props) => {
                     </tbody>
                 </StyledTable>
                 {displayAssets()}
-            </AssetWrapper>
+            </AssetWrapper> 
         </WalletContainer>
     );
 };

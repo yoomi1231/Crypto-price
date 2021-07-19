@@ -70,8 +70,7 @@ const Pagination = ({ pageLimit, currentPage, updateCurrentPage }) => {
                             <span>{item}</span>
                         </Comp>
                     );
-                })}
-                     
+                })}  
             <PageButton onClick={goToNextPage}>Next</PageButton>
         </Container>
     );

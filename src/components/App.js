@@ -8,6 +8,7 @@ import AssetList from './Portfolio/AssetList';
 import NavBar from './NavBar';
 import Modal from 'react-modal';
 import Trade from './Market/Trade';
+import CryptoChart from './Portfolio/CryptoChart';
 
 const Container = styled.div`
     display: flex;
@@ -16,7 +17,7 @@ const Container = styled.div`
     background-color: #f1f1f1;
 `;
 
-const TradeModal = styled(Modal)`
+const StyledModal = styled(Modal)`
     width: 50%;
     height: 50%;
     margin: auto;
@@ -25,7 +26,12 @@ const TradeModal = styled(Modal)`
     margin-top: 10%;
     padding-top: 50px;
     background-color: #d3dde3;
-`;   
+`;
+
+ const PortfolioContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+ `;
 
 const KEY = '69e3fc48c2c8aab69a22c9c5b7631c169d983232';
 
@@ -54,6 +60,7 @@ const reducer = (state, action) => {
                     [action.payload.coin_symb]: 
                     { 
                         name: action.payload.coin_name,
+                        symb: action.payload.coin_symb,
                         total_amount: action.payload.amt,
                         total_num: action.payload.coin_num
                     }
@@ -85,7 +92,7 @@ const reducer = (state, action) => {
                 return state;
             } 
         default:
-            throw state;
+            return state;
     } 
 };
 
@@ -95,20 +102,16 @@ const App = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [crypto, setCrypto] = useState();
     const [state, dispatch] = useReducer(reducer, assetData, () => {
-        const localData = localStorage.getItem('data');
+        const localData = localStorage.getItem('storedData');
         return localData ? JSON.parse(localData) : assetData;
     });
-
-    // useEffect(() => {
-    //     const data = JSON.parse(localStorage.getItem('data'));
-    //     if (data) {
-    //         return state === data
-    //     }
-    // }, [])
+    const [chartVisible, setChartVisible] = useState(false);
+    const [selectedChart, setSelectedChart] = useState();
 
     useEffect(() => {
-        localStorage.setItem('data', JSON.stringify(state));
+        localStorage.setItem('storedData', JSON.stringify(state));
     }, [state]);
+
 
     const toggleModal = () => {
         setIsOpen(!isOpen);
@@ -129,6 +132,15 @@ const App = () => {
         toggleModal();
     };
 
+    const toggleChartModal = () => {
+        setChartVisible(!chartVisible);
+    };
+
+    const onViewChartClick = (coin) => () => {
+        setSelectedChart(coin);
+        toggleChartModal();
+    };
+
     const [{ data, loading, error }, refetch] = useAxios({
         url: `https://api.nomics.com/v1/currencies/ticker?key=${KEY}&per-page=50&page=${currentPage}`
     });
@@ -143,20 +155,29 @@ const App = () => {
                     <NavBar />
                     <Switch>
                         <Route path="/portfolio" exact>
-                            <AssetList myUSD={state.usd.total_amount} curAsset={state} data={data} refetch={refetch} />
+                            <PortfolioContainer>
+                                <AssetList myUSD={state.usd.total_amount} curAsset={state} data={data} refetch={refetch} onViewChartClick={onViewChartClick} cryptoChart={selectedChart} />
+                            </PortfolioContainer>
                         </Route> 
                         <Route path="/" exact>
                             <PriceList onTradeClick={onTradeClick} data={data} currentPage={currentPage} updateCurrentPage={setCurrentPage} />
                         </Route> 
                     </Switch>
                 </Container>
-                <TradeModal
+                <StyledModal
                     isOpen={isOpen} 
                     onRequestClose={toggleModal}
                     ariaHideApp={false} 
                 >
                     <Trade onCoinBuyClick={onCoinBuyClick} onCoinSellClick={onCoinSellClick} toggleModal={toggleModal} item={crypto} amt={amt} setAmt={setAmt} />
-                </TradeModal>
+                </StyledModal>
+                <StyledModal
+                    isOpen={chartVisible} 
+                    onRequestClose={toggleChartModal}
+                    ariaHideApp={false} 
+                >
+                    <CryptoChart item={selectedChart} />
+                </StyledModal>
             </Router>    
         </div>
     );
