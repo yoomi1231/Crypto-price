@@ -30,7 +30,7 @@ const Trade = ({ onCoinBuyClick, onCoinSellClick, toggleModal, item, amt , setAm
                     }}
                 >
                     <div>
-                        <label for="buyAmount">$</label>
+                        <label htmlFor="buyAmount">$</label>
                         <input 
                             type="number" 
                             name="buyAmount" 
@@ -50,7 +50,7 @@ const Trade = ({ onCoinBuyClick, onCoinSellClick, toggleModal, item, amt , setAm
                     }}
                 >   
                     <div>
-                        <label for="sellAmount">$</label>
+                        <label htmlFor="sellAmount">$</label>
                         <input
                             type="number" 
                             name="sellAmount" 

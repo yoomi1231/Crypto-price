@@ -107,7 +107,7 @@ const AssetList = (props) => {
                             </MenuItemWrapper>
                         </td>  
                         <td>
-                            <StyledButton onClick={onViewChartClick(curAsset[asset])}><i class="fas fa-chart-line"></i></StyledButton>
+                            <StyledButton onClick={onViewChartClick(curAsset[asset])}><i className="fas fa-chart-line"></i></StyledButton>
                             
                         </td>
                     </StyledRow>

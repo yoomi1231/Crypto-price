@@ -52,7 +52,7 @@ const CryptoChart = (props) => {
                 label: item.name,
                 data: extractRateData(data),
                 fill: false,
-                borderBolor: 'black'
+                borderColor: 'grey'
             }
         ]
     };
