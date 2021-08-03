@@ -35,24 +35,15 @@ const Statement = styled.span`
     color: #716B6E;
 `;
 
-const getDate = (d) => {
-    function pad(n){return n<10 ? '0'+n : n}
-    return d.getUTCFullYear()+'-'
-         + pad(d.getUTCMonth()+1)+'-'
-         + pad(d.getUTCDate())+'T'
-         + pad(d.getUTCHours())+'%3A'
-         + pad(d.getUTCMinutes())+'%3A'
-         + pad(d.getUTCSeconds())+'Z'
-};
-
-const d = new Date();
-const TODAY = getDate(d); 
-const YESTERDAY = getDate(new Date(d.setDate(d.getDate()-1)));
-
+const now = new Date();
+const yesterday = new Date(now);
+yesterday.setDate(now.getDate() - 1);
+const startDate = encodeURIComponent(yesterday.toISOString().substring(0, 23));
+const encodedStartDate = `${startDate}Z`;
 
 const MarketCapHistory = () => {
     const [{ data, loading, error }] = useAxios({
-        url: `https://api.nomics.com/v1/market-cap/history?key=${KEY}&start=${YESTERDAY}&end=${TODAY}`
+        url: `https://api.nomics.com/v1/market-cap/history?key=${KEY}&start=${encodedStartDate}`
     })
 
     if (loading) return <div>Loading...</div>
