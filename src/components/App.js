@@ -142,7 +142,7 @@ const App = () => {
     };
 
     const [{ data, loading, error }, refetch] = useAxios({
-        url: `https://api.nomics.com/v1/currencies/ticker?key=${KEY}&per-page=50&page=${currentPage}`
+        url: `https://api.nomics.com/v1/currencies/ticker?key=${KEY}&per-page=100&page=${currentPage}`
     });
 
     if (loading) return <div>Loading...</div>

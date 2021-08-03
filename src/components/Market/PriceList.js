@@ -67,7 +67,7 @@ const PriceList = (props) => {
  
 
     const sortByName = (property) => () => {
-        const newData = data.slice(0, 60).sort((a, b) => {
+        const newData = data.sort((a, b) => {
             
             let propA = a[property];
             let propB = b[property];
